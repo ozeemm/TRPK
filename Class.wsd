@@ -1,0 +1,176 @@
+@startuml Classes
+skinparam classAttributeIconSize 0
+
+' ================= BACKEND =================
+package "Backend (FastAPI)" {
+class Patient{
+    + surname: String
+    + name: String
+    + lastname: String
+    + phone: String
+    + birthday: String
+    + user: int
+}
+
+class Doctor{
+    + surname: String
+    + name: String
+    + lastname: String
+    + speciality: String
+}
+
+class DoctorSchedule{
+    + doctor: int
+    + reservation_date: Date
+    + reservation_time_start: Time
+    + reservation_time_end: Time
+}
+
+class Reservation{
+    + patient: int
+    + time_slot: int
+    + status: String
+}
+
+class Notification{
+    + reservation: int
+    + sending_datetime: DateTime
+    + type: String
+    + is_viewed: Bool
+}
+
+class PatientSerializer{
+}
+
+class DoctorSerializer{
+}
+
+class DoctorScheduleSerializer{
+    + get_is_reserved(obj)
+    + get_is_reservable(obj)
+}
+
+class ReservationListSerializer{
+}
+
+class ReservationCreateSerializer{
+    + validate(data)
+    + create(validated_data)
+}
+
+class NotificationSerializer{
+    + get_message(obj)
+}
+
+class UserProfileViewset{
+    + login(request)
+    + logout(request)
+    + info(request)
+}
+
+class DoctorViewset{
+    + list(request)
+}
+
+class DoctorScheduleViewset{
+    + retrieve(request)
+}
+
+class ReservationViewset{
+    + get_queryset()
+    + get_serializer_class()
+    + list(request)
+    + create(request)
+    + change_upcoming_reservation_statuses()
+    + confirm_reservation(request)
+    + cancel_reservation(request)
+}
+
+class NotificationViewset{
+    + get_serializer_class()
+    + get_queryset()
+    + read(request)
+}
+
+class NotificationService{
+    + create_reservation_notification(reservation)
+    + awaiting_confirmation_notification(reservation)
+    + confirm_reservation_notification(reservation)
+    + cancel_reservation_notification(reservation)
+    + create_notification(reservation)
+}
+
+' Serializers
+DoctorScheduleSerializer --> DoctorSchedule
+PatientSerializer --> Patient
+DoctorSerializer --> Doctor
+ReservationListSerializer --> Reservation
+ReservationCreateSerializer --> Reservation
+NotificationSerializer --> Notification
+
+' Viewsets
+UserProfileViewset --> PatientSerializer
+DoctorViewset --> DoctorSerializer
+DoctorScheduleViewset --> DoctorScheduleSerializer
+ReservationViewset --> ReservationCreateSerializer
+ReservationViewset --> ReservationListSerializer
+ReservationViewset --> NotificationService
+NotificationService --> Notification
+NotificationViewset --> NotificationSerializer
+}
+
+' ================= FRONTEND =================
+package "Frontend (React)" {
+
+class App {
+}
+
+class Navbar{
+    + fetchNotifications()
+    + formatTimeAgo(dateString)
+    + toggleNotifications()
+}
+
+class LoginView{
+    + login()
+}
+
+class ProfileView{
+    + logout()
+}
+
+class NewReservationView{
+    + fetchDoctors()
+    + onSpecialityChange()
+    + onDoctorChange()
+    + submitReservation()
+}
+
+class ReservationHistoryView{
+    + fetchReservations()
+    + confirmReservation(id)
+    + cancelReservation(id)
+    + formatDate(dateStr)
+    + formatWeekday(dateStr)
+    + getStatusBadgeClass(status)
+    + getStatusLabel(status)
+}
+
+App --> Navbar
+Navbar --> LoginView
+Navbar --> ProfileView
+Navbar --> NewReservationView
+Navbar --> ReservationHistoryView
+}
+
+' ================= FRONTEND <-> BACKEND =================
+
+Navbar --> NotificationViewset
+LoginView --> UserProfileViewset
+ProfileView --> UserProfileViewset
+NewReservationView --> DoctorViewset
+NewReservationView --> DoctorScheduleViewset
+NewReservationView --> ReservationViewset
+ReservationHistoryView --> ReservationViewset
+
+@enduml
