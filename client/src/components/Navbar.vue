@@ -83,8 +83,8 @@ onMounted(async () => {
                         <router-link class="nav-link" to="/reservations/history">Мои записи</router-link>
                     </li>
                 </ul>
-                <div class="d-flex align-items-center position-relative">
-                    <div class="dropdown">
+                <div class="d-flex align-items-center">
+                    <div class="dropdown notification-dropdown-container">
                         <button
                             class="btn btn-link text-white position-relative"
                             @click="toggleNotifications"
@@ -100,7 +100,6 @@ onMounted(async () => {
                         <div
                             v-if="showNotifications"
                             class="dropdown-menu show notifications-dropdown"
-                            style="min-width: 300px;"
                         >
                             <h6 class="dropdown-header">Уведомления</h6>
                             <div v-if="notifications.length === 0" class="dropdown-item text-muted">
@@ -129,6 +128,10 @@ onMounted(async () => {
 </template>
 
 <style scoped>
+.notification-dropdown-container {
+    position: relative;
+}
+
 .notifications-dropdown {
     position: absolute;
     right: 0;
@@ -136,5 +139,34 @@ onMounted(async () => {
     margin-top: 0.5rem;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     border: none;
+    min-width: 280px;
+    max-width: 320px;
+    max-height: 400px;
+    overflow-y: auto;
+    z-index: 1100;
+    background-color: #fff;
+}
+
+.notifications-dropdown .dropdown-header,
+.notifications-dropdown .dropdown-item {
+    color: #212529;
+}
+
+.notifications-dropdown .dropdown-item .text-muted {
+    color: #6c757d !important;
+}
+
+.notifications-dropdown .dropdown-item:hover {
+    background-color: #f8f9fa;
+}
+
+/* Адаптация для мобильных устройств */
+@media (max-width: 991px) {
+    .notifications-dropdown {
+        left: 0;
+        right: auto;
+        min-width: 280px;
+        max-width: calc(100vw - 20px);
+    }
 }
 </style>

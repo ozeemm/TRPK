@@ -1,0 +1,43 @@
+Login
+/api/user/login/
+POST
+
+Logout
+/api/user/logout/
+POST
+
+Информация о пользователе (личный кабинет, авторизован ли)
+/api/user/info/
+GET
+
+Список врачей, агрегированные по специальностям
+/api/doctors/
+GET
+
+Слоты врача
+/api/doctorschedules/<id>/
+GET
+
+Создать запись
+/api/reservations/
+POST
+
+Мои записи (агрегирование по статусам + изменение статуса)
+/api/reservations/
+POST
+
+Подтвердить запись
+/api/reservations/<id>/confirm/
+POST
+
+Отменить запись
+/api/reservations/<id>/cancel/
+POST
+
+Получить уведомления
+/api/notifications/
+GET
+
+Прочитать уведомления
+/api/notifications/read/
+POST

@@ -189,7 +189,7 @@ class ReservationViewset(mixins.ListModelMixin, mixins.CreateModelMixin, Generic
 
         return Response(status=status.HTTP_200_OK)
     
-    @action(url_path='cancel', detail=True, methods=['GET'])
+    @action(url_path='cancel', detail=True, methods=['POST'])
     def cancel_reservation(self, request, pk=None):
         reservation = Reservation.objects.get(pk=pk)
 

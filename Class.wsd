@@ -2,7 +2,7 @@
 skinparam classAttributeIconSize 0
 
 ' ================= BACKEND =================
-package "Backend (FastAPI)" {
+package "Backend (Django)" {
 class Patient{
     + surname: String
     + name: String
@@ -120,7 +120,7 @@ NotificationViewset --> NotificationSerializer
 }
 
 ' ================= FRONTEND =================
-package "Frontend (React)" {
+package "Frontend (Vue)" {
 
 class App {
 }

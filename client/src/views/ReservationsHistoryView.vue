@@ -47,7 +47,7 @@ async function confirmReservation(id) {
 async function cancelReservation(id) {
   actionLoading.value[id] = true
   try {
-    await axios.get(`/api/reservations/${id}/cancel/`)
+    await axios.post(`/api/reservations/${id}/cancel/`)
     await fetchReservations()
   } catch (err) {
     error.value = err.response?.data?.error || 'Ошибка отмены'
